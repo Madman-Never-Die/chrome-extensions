@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Educoin Extension</title>
+    <style>
+      /* 전체 화면 설정 */
+      body {
+        margin: 0;
+        padding: 20px;
+        background-color: #0d1117;
+        font-family: Arial, sans-serif;
+        color: white;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        width: 400px;
+        position: relative;
+      }
+
+      /* 제목 스타일 */
+      h1 {
+        font-size: 22px;
+        margin-bottom: 5px;
+      }
+
+      p {
+        font-size: 16px;
+        margin-bottom: 30px;
+        color: #ccc;
+      }
+
+      /* 타이머 스타일 */
+      .timer {
+        display: flex;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+
+      .timer-box {
+        background-color: #1f2937;
+        border: 1px solid #333;
+        padding: 10px 15px;
+        border-radius: 10px;
+        text-align: center;
+        width: 80px;
+      }
+
+      .timer-box span {
+        font-size: 18px;
+        font-weight: bold;
+        display: block;
+        margin-bottom: 5px;
+      }
+
+      /* 이미지 스타일 */
+      .image-container {
+        width: 100%;
+        max-width: 350px;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-bottom: 20px;
+      }
+
+      .image-container img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+      }
+
+      /* 버튼 스타일 */
+      .connect-button {
+        background-color: #3b82f6;
+        color: white;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        padding: 10px 20px;
+        cursor: pointer;
+      }
+
+      .connect-button:hover {
+        background-color: #2563eb;
+      }
+
+      /* 상태 메시지 */
+      #status {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #aaa;
+      }
+
+      /* Close button */
+      .close-button {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: transparent;
+        color: #fff;
+        font-size: 18px;
+        border: none;
+        cursor: pointer;
+      }
+
+      .close-button:hover {
+        color: #ccc;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Close button -->
+    <button class="close-button" id="closeExtension">&times;</button>
+
+    <!-- 제목 -->
+    <h1>Connect dApp and Get Rewards</h1>
+    <p>Reward: 0.2 $EDU</p>
+
+    <!-- 타이머 -->
+    <div class="timer">
+      <div class="timer-box">
+        <span>00</span>
+        Hours
+      </div>
+      <div class="timer-box">
+        <span>15</span>
+        Minutes
+      </div>
+      <div class="timer-box">
+        <span>00</span>
+        Seconds
+      </div>
+    </div>
+
+    <!-- 이미지 -->
+    <div class="image-container">
+      <img src="https://via.placeholder.com/350x200" alt="Bitcoin Image" />
+    </div>
+
+    <!-- 버튼 -->
+    <button id="connectWallet" class="connect-button">Connect</button>
+
+    <!-- 상태 메시지 -->
+    <div id="status">Not connected</div>
+
+    <!-- JavaScript -->
+    <script>
+      // Close button functionality
+      document
+        .getElementById("closeExtension")
+        .addEventListener("click", () => {
+          window.close(); // Close the extension popup
+        });
+
+      // Connect Metamask functionality
+      document
+        .getElementById("connectWallet")
+        .addEventListener("click", async () => {
+          const statusDiv = document.getElementById("status");
+
+          if (window.ethereum) {
+            try {
+              const accounts = await window.ethereum.request({
+                method: "eth_requestAccounts",
+              });
+              const account = accounts[0];
+              statusDiv.textContent = `Connected: ${account}`;
+            } catch (error) {
+              console.error("Connection error:", error);
+              statusDiv.textContent = "Connection rejected. Please try again.";
+            }
+          } else {
+            statusDiv.textContent = "Metamask is not installed.";
+            alert("Metamask is not installed. Please install Metamask.");
+          }
+        });
+    </script>
+  </body>
+</html>
